@@ -4,6 +4,7 @@ import { sixLetterWords } from './constants'
 import { useCallback, useMemo, useState } from 'react'
 import keyIcon from './assets/key-icon.svg'
 import { shuffle } from './utils'
+import './firebase'
 
 function App() {
     const [selectedLetters, setSelectedLetters] = useState<string[]>(() =>
