@@ -1,0 +1,89 @@
+.carousel-container {
+    position: relative;
+    height: 1em;
+    overflow: hidden;
+    // border: solid 1px #bbb;
+
+    .carousel {
+        position: absolute;
+        display: flex;
+
+        .letter {
+            // border: solid 1px #bbb;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 1em;
+            height: 1em;
+
+            &[data-status='correct'] .inner {
+                animation: expand-correct 0.5s ease-in-out forwards;
+            }
+            &[data-status='incorrect'] .inner {
+                animation: expand-incorrect 0.5s ease-in-out forwards;
+            }
+
+            &[data-row-index='0'] .inner {
+                animation-delay: 0;
+            }
+            &[data-row-index='1'] .inner {
+                animation-delay: 0.1s;
+            }
+            &[data-row-index='2'] .inner {
+                animation-delay: 0.2s;
+            }
+            &[data-row-index='3'] .inner {
+                animation-delay: 0.3s;
+            }
+            &[data-row-index='4'] .inner {
+                animation-delay: 0.4s;
+            }
+            &[data-row-index='5'] .inner {
+                animation-delay: 0.5s;
+            }
+
+            .inner {
+                // border: solid 2px #bbb;
+                border-radius: 0.1em;
+                background-color: #ddd;
+                color: #222;
+                width: 1.1em;
+                height: 1.1em;
+                line-height: 1.1em;
+                font-size: 0.8em;
+                font-weight: bold;
+                user-select: none;
+            }
+        }
+    }
+}
+
+@keyframes expand-correct {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.1;
+    }
+    100% {
+        scale: 1;
+        background-color: #03b83c;
+        color: #ddd;
+    }
+}
+
+@keyframes expand-incorrect {
+    0% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.1;
+    }
+    100% {
+        scale: 1;
+        background-color: #000;
+        color: #ddd;
+    }
+}
