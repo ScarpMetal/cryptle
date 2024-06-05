@@ -11,6 +11,27 @@
 
 .carousels {
     position: relative;
+    background-color: #2a2a2a;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: 3;
+        pointer-events: none;
+        width: 30px;
+        height: 100%;
+        top: 0;
+    }
+
+    &::before {
+        box-shadow: 20px 0px 10px -10px inset #242424;
+        left: 0;
+    }
+    &::after {
+        box-shadow: -20px 0px 10px -10px inset #242424;
+        right: 0;
+    }
 
     .center {
         font-size: 64px;
@@ -41,6 +62,10 @@
 
     &:not(:disabled) {
         animation: expand-and-contract 0.5s ease-in-out;
+    }
+
+    &:active {
+        scale: 0.95;
     }
 
     img {
