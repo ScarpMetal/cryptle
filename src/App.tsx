@@ -116,12 +116,12 @@ function App() {
         <>
             <p>cryptle</p>
             {/* <p>word: {targetWord}</p> */}
-            <p>
+            {/* <p>
                 selected:{' '}
                 {selectedLetters
                     .map((letter) => (letter === '' ? '?' : letter))
                     .join(' ')}
-            </p>
+            </p> */}
             <div className="carousels">
                 <Carousel
                     rowIndex={0}

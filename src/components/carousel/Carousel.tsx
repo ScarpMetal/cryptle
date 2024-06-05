@@ -48,8 +48,10 @@ export default function Carousel({
          */
         const letterMiddle = letterSize / 2
         const drag = 0.9
+        const centerForce = 0.1
         let holding = false
-        let posX = (letterSize * numLettersInContainerViewport) / 2
+        let posX =
+            (numLettersInContainerViewport * letterSize - ref.clientWidth) / 2
         let velX = 0
         let mouseX = 0
         let lastMouseX = 0
@@ -100,7 +102,8 @@ export default function Carousel({
             } else {
                 if (Math.abs(deltaLetterMiddle) > 1) {
                     velX +=
-                        (deltaLetterMiddle / Math.abs(deltaLetterMiddle)) * 0.2
+                        (deltaLetterMiddle / Math.abs(deltaLetterMiddle)) *
+                        centerForce
                 }
 
                 velX *= drag
