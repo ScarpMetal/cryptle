@@ -24,22 +24,22 @@
             }
 
             &[data-row-index='0'] .inner {
-                animation-delay: 0;
+                animation-delay: 0.5s;
             }
             &[data-row-index='1'] .inner {
-                animation-delay: 0.1s;
-            }
-            &[data-row-index='2'] .inner {
-                animation-delay: 0.2s;
-            }
-            &[data-row-index='3'] .inner {
-                animation-delay: 0.3s;
-            }
-            &[data-row-index='4'] .inner {
                 animation-delay: 0.4s;
             }
+            &[data-row-index='2'] .inner {
+                animation-delay: 0.3s;
+            }
+            &[data-row-index='3'] .inner {
+                animation-delay: 0.2s;
+            }
+            &[data-row-index='4'] .inner {
+                animation-delay: 0.1s;
+            }
             &[data-row-index='5'] .inner {
-                animation-delay: 0.5s;
+                animation-delay: 0s;
             }
 
             .inner {
