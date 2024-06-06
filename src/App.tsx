@@ -91,7 +91,14 @@ function App() {
         })
     }, [selectedLetters, targetWord])
 
-    const disableTestButton = useMemo(() => selectedLetters.some((letter) => !letter), [selectedLetters])
+    const disableTestButton = useMemo(
+        () =>
+            selectedLetters.some((letter) => !letter) ||
+            selectedLetters.filter(
+                (letter, index) => correctRows[index] !== letter && !incorrectRows[index].includes(letter),
+            ).length === 0,
+        [selectedLetters, correctRows, incorrectRows],
+    )
 
     return (
         <>
