@@ -95,7 +95,7 @@ function App() {
 
     return (
         <>
-            <p>cryptle</p>
+            <h1>cryptle</h1>
             {/* <p>word: {targetWord}</p> */}
             {/* <p>
                 selected:{' '}
