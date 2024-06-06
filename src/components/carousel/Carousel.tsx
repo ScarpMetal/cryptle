@@ -208,7 +208,7 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, onChan
             }
 
             // Determine whether to call the settled function
-            if (!settled && !holding && !targetX && Math.abs(velX) < 0.01) {
+            if (!settled && !holding && !targetX && Math.abs(velX) < 0.03) {
                 settled = true
                 handleCarouselSettled(posX)
             }
