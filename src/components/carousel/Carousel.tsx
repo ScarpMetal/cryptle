@@ -41,9 +41,9 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, onChan
         const centerForce = 0.1
         const moveTowardsSpeed = 0.1
         const carouselWidth = carouselRef.clientWidth
-        const containerWidth = containerRef.clientWidth
-        const containerPageX = containerRef.getBoundingClientRect().x
-        const containerCenterPageX = containerPageX + containerWidth / 2
+        // const containerWidth = containerRef.clientWidth
+        // const containerPageX = containerRef.getBoundingClientRect().x
+        // const containerCenterPageX = containerPageX + containerWidth / 2
         const maxPosX = Math.floor((numLettersInContainerViewport / 2) * letterSize - 0.01)
         const minPosX = -carouselRef.clientWidth + (numLettersInContainerViewport / 2) * letterSize + 0.01
         let holding = false
@@ -58,9 +58,9 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, onChan
         /**
          * Helper functions
          */
-        const toContainerSpaceX = (pageX: number) => pageX - containerPageX
-        const getCarouselPageX = () => containerPageX + posX
-        const getCarouselCenterPageX = () => getCarouselPageX() + carouselWidth / 2
+        // const toContainerSpaceX = (pageX: number) => pageX - containerPageX
+        // const getCarouselPageX = () => containerPageX + posX
+        // const getCarouselCenterPageX = () => getCarouselPageX() + carouselWidth / 2
 
         const moveTargetBy = (moveBy: number) => {
             if (targetX) {
@@ -75,11 +75,11 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, onChan
             }
         }
 
-        const setPageTarget = (pageX: number) => {
-            const deltaX = pageX - containerCenterPageX
-            const rawTargetX = posX - deltaX
-            targetX = constrain(Math.floor(rawTargetX / letterSize) * letterSize + letterSize / 2, minPosX, maxPosX)
-        }
+        // const setPageTarget = (pageX: number) => {
+        //     const deltaX = pageX - containerCenterPageX
+        //     const rawTargetX = posX - deltaX
+        //     targetX = constrain(Math.floor(rawTargetX / letterSize) * letterSize + letterSize / 2, minPosX, maxPosX)
+        // }
 
         const moveTowards = (targetPosX: number, speed: number) => {
             if (!carouselRef || !containerRef) return // For type safety
