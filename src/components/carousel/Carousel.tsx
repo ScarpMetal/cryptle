@@ -7,13 +7,14 @@ export interface CarouselProps {
     letters: string[]
     correct: string
     incorrect: string[]
+    disabled: boolean
     onChangeLetter: (row: number, letter: string) => void
 }
 
 const letterSize = 64
 const numLettersInContainerViewport = 10
 
-export default function Carousel({ rowIndex, letters, correct, incorrect, onChangeLetter }: CarouselProps) {
+export default function Carousel({ rowIndex, letters, correct, incorrect, disabled, onChangeLetter }: CarouselProps) {
     const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
     const [carouselRef, setCarouselRef] = useState<HTMLDivElement | null>(null)
 
@@ -250,6 +251,7 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, onChan
             style={{
                 fontSize: letterSize,
                 width: `${numLettersInContainerViewport}em`,
+                pointerEvents: disabled ? 'none' : 'initial',
             }}
             ref={setContainerRef}
         >

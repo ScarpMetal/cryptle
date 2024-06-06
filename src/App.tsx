@@ -159,6 +159,7 @@ function App() {
                     correct={correctRows[0]}
                     incorrect={incorrectRows[0]}
                     onChangeLetter={handleLetterChange}
+                    disabled={roundComplete}
                 />
                 <Carousel
                     rowIndex={1}
@@ -166,6 +167,7 @@ function App() {
                     correct={correctRows[1]}
                     incorrect={incorrectRows[1]}
                     onChangeLetter={handleLetterChange}
+                    disabled={roundComplete}
                 />
                 <Carousel
                     rowIndex={2}
@@ -173,6 +175,7 @@ function App() {
                     correct={correctRows[2]}
                     incorrect={incorrectRows[2]}
                     onChangeLetter={handleLetterChange}
+                    disabled={roundComplete}
                 />
                 <Carousel
                     rowIndex={3}
@@ -180,6 +183,7 @@ function App() {
                     correct={correctRows[3]}
                     incorrect={incorrectRows[3]}
                     onChangeLetter={handleLetterChange}
+                    disabled={roundComplete}
                 />
                 <Carousel
                     rowIndex={4}
@@ -187,6 +191,7 @@ function App() {
                     correct={correctRows[4]}
                     incorrect={incorrectRows[4]}
                     onChangeLetter={handleLetterChange}
+                    disabled={roundComplete}
                 />
                 <Carousel
                     rowIndex={5}
@@ -194,6 +199,7 @@ function App() {
                     correct={correctRows[5]}
                     incorrect={incorrectRows[5]}
                     onChangeLetter={handleLetterChange}
+                    disabled={roundComplete}
                 />
                 <div className="center" />
             </div>
