@@ -59,9 +59,11 @@
     padding: 1em;
     width: 4em;
     height: 4em;
+    background-color: #6b6b6b;
 
     &:not(:disabled) {
         animation: expand-and-contract 0.5s ease-in-out;
+        background-color: #03b83c;
     }
 
     &:active {
