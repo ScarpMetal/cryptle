@@ -6,6 +6,8 @@ import keyIcon from './assets/key-icon.svg'
 import { shuffle } from './utils'
 import './firebase'
 import Modal from './components/modal/Modal'
+import { logEvent } from 'firebase/analytics'
+import { analytics } from './firebase'
 
 function App() {
     const [selectedLetters, setSelectedLetters] = useState<string[]>(() => new Array(6).fill(''))
@@ -19,6 +21,7 @@ function App() {
     })
     const [remainingKeys, setRemainingKeys] = useState(5)
     const [showModal, setShowModal] = useState(false)
+    const [keyHistory, setKeyHistory] = useState(() => new Array(6).fill(''))
 
     /**
      * Select a few random words
@@ -83,11 +86,14 @@ function App() {
 
     useEffect(() => {
         if (roundComplete) {
+            logEvent(analytics, 'round_complete')
             setTimeout(() => {
                 setShowModal(true)
             }, 1000)
         }
     }, [roundComplete])
+
+    useEffect
 
     const handleLetterChange = useCallback((row: number, letter: string) => {
         setSelectedLetters((prev) => {
@@ -106,12 +112,17 @@ function App() {
     const handleTestClick = useCallback(() => {
         if (disableTestButton && roundComplete) {
             setShowModal(true)
+            logEvent(analytics, 'reopen_modal')
         }
         if (disableTestButton) return
+        logEvent(analytics, 'test_button_click')
+        const guessHistoryRows: string[] = []
         selectedLetters.forEach((letter, i) => {
             if (letter === targetWord.charAt(i)) {
+                guessHistoryRows.push('🟩')
                 setCorrectRows((prev) => prev.map((existingLetter, index) => (i === index ? letter : existingLetter)))
             } else {
+                guessHistoryRows.push('⬛️')
                 setIncorrectRows((prev) => {
                     const nextIncorrectRows: string[][] = []
                     for (let index = 0; index < 6; index++) {
@@ -126,6 +137,8 @@ function App() {
                 })
             }
         })
+
+        setKeyHistory((prev) => prev.map((row, index) => row + guessHistoryRows[index]))
         setRemainingKeys((prev) => Math.max(0, prev - 1))
     }, [selectedLetters, targetWord, disableTestButton, roundComplete])
 
@@ -199,6 +212,13 @@ function App() {
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
                     <h2>{roundWon ? 'Success' : 'Failed'}</h2>
+                    <div className="key-history">
+                        {keyHistory.map((row, index) => (
+                            <div className="key-history-row" key={index}>
+                                {row}
+                            </div>
+                        ))}
+                    </div>
                     <h3>The word was "{targetWord}"</h3>
                 </Modal>
             )}
