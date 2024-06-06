@@ -8,9 +8,10 @@ export function shuffle<T>(array: T[]) {
         currentIndex--
 
         // And swap it with the current element.
-        ;[array[currentIndex], array[randomIndex]] = [
-            array[randomIndex],
-            array[currentIndex],
-        ]
+        ;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
     }
+}
+
+export function constrain(value: number, min: number, max: number) {
+    return Math.max(min, Math.min(value, max))
 }

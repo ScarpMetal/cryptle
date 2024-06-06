@@ -7,12 +7,8 @@ import { shuffle } from './utils'
 import './firebase'
 
 function App() {
-    const [selectedLetters, setSelectedLetters] = useState<string[]>(() =>
-        new Array(6).fill(''),
-    )
-    const [correctRows, setCorrectRows] = useState<string[]>(() =>
-        new Array(6).fill(''),
-    )
+    const [selectedLetters, setSelectedLetters] = useState<string[]>(() => new Array(6).fill(''))
+    const [correctRows, setCorrectRows] = useState<string[]>(() => new Array(6).fill(''))
     const [incorrectRows, setIncorrectRows] = useState(() => {
         const rows: string[][] = []
         for (let i = 0; i < 6; i++) {
@@ -27,9 +23,7 @@ function App() {
     const randomWords = useMemo(() => {
         const randomWords = []
         for (let i = 0; i < 10; i++) {
-            const randomIndex = Math.floor(
-                Math.random() * sixLetterWords.length,
-            )
+            const randomIndex = Math.floor(Math.random() * sixLetterWords.length)
             randomWords.push(sixLetterWords[randomIndex])
         }
         return randomWords
@@ -38,10 +32,7 @@ function App() {
     /**
      * Select a target word from the array of random words
      */
-    const targetWord = useMemo(
-        () => randomWords[Math.floor(Math.random() * randomWords.length)],
-        [randomWords],
-    )
+    const targetWord = useMemo(() => randomWords[Math.floor(Math.random() * randomWords.length)], [randomWords])
 
     const letterRows = useMemo(() => {
         /**
@@ -82,19 +73,13 @@ function App() {
     const handleTestClick = useCallback(() => {
         selectedLetters.forEach((letter, i) => {
             if (letter === targetWord.charAt(i)) {
-                setCorrectRows((prev) =>
-                    prev.map((existingLetter, index) =>
-                        i === index ? letter : existingLetter,
-                    ),
-                )
+                setCorrectRows((prev) => prev.map((existingLetter, index) => (i === index ? letter : existingLetter)))
             } else {
                 setIncorrectRows((prev) => {
                     const nextIncorrectRows: string[][] = []
                     for (let index = 0; index < 6; index++) {
                         if (i === index) {
-                            const nextIncorrectRow: string[] = [
-                                ...new Set([...prev[index], letter]),
-                            ]
+                            const nextIncorrectRow: string[] = [...new Set([...prev[index], letter])]
                             nextIncorrectRows.push(nextIncorrectRow)
                         } else {
                             nextIncorrectRows.push(prev[index])
@@ -106,12 +91,8 @@ function App() {
         })
     }, [selectedLetters, targetWord])
 
-    const disableTestButton = useMemo(
-        () => selectedLetters.some((letter) => !letter),
-        [selectedLetters],
-    )
+    const disableTestButton = useMemo(() => selectedLetters.some((letter) => !letter), [selectedLetters])
 
-    console.log(selectedLetters)
     return (
         <>
             <p>cryptle</p>
@@ -167,12 +148,7 @@ function App() {
                 />
                 <div className="center" />
             </div>
-            <button
-                className="test-button"
-                type="button"
-                onClick={handleTestClick}
-                disabled={disableTestButton}
-            >
+            <button className="test-button" type="button" onClick={handleTestClick} disabled={disableTestButton}>
                 <img src={keyIcon} alt="key" />
             </button>
         </>

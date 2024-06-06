@@ -2,14 +2,12 @@
     position: relative;
     height: 1em;
     overflow: hidden;
-    // border: solid 1px #bbb;
 
     .carousel {
         position: absolute;
         display: flex;
 
         .letter {
-            // border: solid 1px #bbb;
             flex-shrink: 0;
             display: flex;
             align-items: center;
@@ -58,32 +56,32 @@
             }
         }
     }
-}
 
-@keyframes expand-correct {
-    0% {
-        scale: 1;
+    @keyframes expand-correct {
+        0% {
+            scale: 1;
+        }
+        50% {
+            scale: 1.1;
+        }
+        100% {
+            scale: 1;
+            background-color: #03b83c;
+            color: #ddd;
+        }
     }
-    50% {
-        scale: 1.1;
-    }
-    100% {
-        scale: 1;
-        background-color: #03b83c;
-        color: #ddd;
-    }
-}
 
-@keyframes expand-incorrect {
-    0% {
-        scale: 1;
-    }
-    50% {
-        scale: 1.1;
-    }
-    100% {
-        scale: 1;
-        background-color: #000;
-        color: #ddd;
+    @keyframes expand-incorrect {
+        0% {
+            scale: 1;
+        }
+        50% {
+            scale: 1.1;
+        }
+        100% {
+            scale: 1;
+            background-color: #000;
+            color: #ddd;
+        }
     }
 }
