@@ -61,7 +61,7 @@
 }
 .test-button {
     font-size: 16px;
-    cursor: pointer;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -71,13 +71,15 @@
     width: 4em;
     height: 4em;
     background-color: #6b6b6b;
+    cursor: default;
 
     &:not([data-disabled='true']) {
         animation: expand-and-contract 0.5s ease-in-out;
         background-color: #03b83c;
+        cursor: pointer;
     }
 
-    &:active {
+    &:not([data-disabled='true']):active {
         scale: 0.95;
     }
 
