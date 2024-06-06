@@ -1,10 +1,11 @@
 import './App.scss'
 import Carousel from './components/carousel'
 import { sixLetterWords } from './constants'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import keyIcon from './assets/key-icon.svg'
 import { shuffle } from './utils'
 import './firebase'
+import Modal from './components/modal/Modal'
 
 function App() {
     const [selectedLetters, setSelectedLetters] = useState<string[]>(() => new Array(6).fill(''))
@@ -16,6 +17,8 @@ function App() {
         }
         return rows
     })
+    const [remainingKeys, setRemainingKeys] = useState(5)
+    const [showModal, setShowModal] = useState(false)
 
     /**
      * Select a few random words
@@ -56,6 +59,36 @@ function App() {
         return rows
     }, [randomWords])
 
+    const disableTestButton = useMemo(
+        () =>
+            remainingKeys <= 0 ||
+            selectedLetters.some((letter) => !letter) ||
+            selectedLetters.filter(
+                (letter, index) => correctRows[index] !== letter && !incorrectRows[index].includes(letter),
+            ).length === 0,
+        [remainingKeys, selectedLetters, correctRows, incorrectRows],
+    )
+
+    const roundWon = useMemo(() => {
+        const lettersAreSelected = !selectedLetters.some((letter, index) => targetWord.charAt(index) !== letter)
+        const lettersAreTested = !correctRows.some((letter) => !letter)
+        return lettersAreSelected && lettersAreTested
+    }, [selectedLetters, correctRows, targetWord])
+
+    const roundFailed = useMemo(() => {
+        return remainingKeys <= 0
+    }, [remainingKeys])
+
+    const roundComplete = useMemo(() => roundWon || roundFailed, [roundWon, roundFailed])
+
+    useEffect(() => {
+        if (roundComplete) {
+            setTimeout(() => {
+                setShowModal(true)
+            }, 1000)
+        }
+    }, [roundComplete])
+
     const handleLetterChange = useCallback((row: number, letter: string) => {
         setSelectedLetters((prev) => {
             const nextSelectedLetters: string[] = []
@@ -71,6 +104,10 @@ function App() {
     }, [])
 
     const handleTestClick = useCallback(() => {
+        if (disableTestButton && roundComplete) {
+            setShowModal(true)
+        }
+        if (disableTestButton) return
         selectedLetters.forEach((letter, i) => {
             if (letter === targetWord.charAt(i)) {
                 setCorrectRows((prev) => prev.map((existingLetter, index) => (i === index ? letter : existingLetter)))
@@ -89,16 +126,8 @@ function App() {
                 })
             }
         })
-    }, [selectedLetters, targetWord])
-
-    const disableTestButton = useMemo(
-        () =>
-            selectedLetters.some((letter) => !letter) ||
-            selectedLetters.filter(
-                (letter, index) => correctRows[index] !== letter && !incorrectRows[index].includes(letter),
-            ).length === 0,
-        [selectedLetters, correctRows, incorrectRows],
-    )
+        setRemainingKeys((prev) => Math.max(0, prev - 1))
+    }, [selectedLetters, targetWord, disableTestButton, roundComplete])
 
     return (
         <>
@@ -155,9 +184,24 @@ function App() {
                 />
                 <div className="center" />
             </div>
-            <button className="test-button" type="button" onClick={handleTestClick} disabled={disableTestButton}>
-                <img src={keyIcon} alt="key" />
-            </button>
+            <div className="test-row">
+                <button
+                    className="test-button"
+                    type="button"
+                    onClick={handleTestClick}
+                    data-disabled={disableTestButton}
+                >
+                    <img src={keyIcon} alt="key" />
+                </button>
+                <div className="remaining-keys">x{remainingKeys}</div>
+            </div>
+
+            {showModal && (
+                <Modal onClose={() => setShowModal(false)}>
+                    <h2>{roundWon ? 'Success' : 'Failed'}</h2>
+                    <h3>The word was "{targetWord}"</h3>
+                </Modal>
+            )}
         </>
     )
 }

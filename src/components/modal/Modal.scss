@@ -1,0 +1,41 @@
+.modal-container {
+    position: fixed;
+    inset: 0;
+    background-color: #00000099;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+
+    .modal {
+        position: absolute;
+        left: 50%;
+        background-color: #444;
+        margin: 1em;
+        padding: 1.5em 2em;
+        min-width: 350px;
+        animation: slide-up 1s forwards ease-in-out;
+        border-radius: 0.2em;
+
+        .close-modal-button {
+            cursor: pointer;
+            position: absolute;
+            right: 1em;
+            top: 1em;
+            background-color: transparent;
+            border: none;
+            padding: 0.25em;
+        }
+    }
+}
+
+@keyframes slide-up {
+    from {
+        top: 0%;
+        transform: translate(-50%, -100%);
+    }
+    to {
+        top: 20%;
+        transform: translate(-50%, 0%);
+    }
+}
