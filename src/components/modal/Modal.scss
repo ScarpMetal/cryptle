@@ -12,18 +12,21 @@
         left: 50%;
         background-color: #444;
         margin: 1em;
-        padding: 1.5em 2em;
+        padding: 1.5em 2.6em;
         min-width: 350px;
-        animation: slide-up 1s forwards ease-in-out;
+        animation: slide-up 0.5s ease-in-out forwards;
         border-radius: 0.2em;
 
         .close-modal-button {
             cursor: pointer;
+            color: #aaa;
             position: absolute;
             right: 1em;
             top: 1em;
             background-color: transparent;
             border: none;
+            font-size: 1em;
+            font-weight: bold;
             padding: 0.25em;
         }
     }
