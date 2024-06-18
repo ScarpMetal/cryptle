@@ -7,7 +7,7 @@ import { sixLetterWords } from './constants/words'
 import './firebase'
 
 function App() {
-    const [targetDate, setTargetDate] = useState(() => new Date())
+    const [targetDate] = useState(() => new Date())
     /**
      * Select a target word based on the current day
      */
