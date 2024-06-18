@@ -23,6 +23,7 @@ function App() {
                 <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
             </div>
             <Level targetDate={targetDate} targetWord={targetWord} key={targetWord} />
+            <p className="copyright">Matthew Graham © {new Date().getFullYear()}</p>
         </>
     )
 }

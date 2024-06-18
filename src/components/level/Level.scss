@@ -1,0 +1,79 @@
+.carousels {
+    position: relative;
+    background-color: #2a2a2a;
+
+    .center {
+        font-size: 64px;
+        position: absolute;
+        top: -0.2em;
+        left: 50%;
+        transform: translate(-50%);
+        width: 1.4em;
+        height: 6.4em;
+        border: solid 10px #aaa;
+        border-radius: 0.1em;
+        z-index: 2;
+        pointer-events: none;
+    }
+}
+
+.test-row {
+    position: relative;
+    .remaining-keys {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 100%;
+        font-size: 2em;
+        text-wrap: nowrap;
+        padding-left: 0.5em;
+    }
+}
+.test-button {
+    font-size: 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 1em;
+    padding: 1em;
+    width: 4em;
+    height: 4em;
+    background-color: #6b6b6b;
+    cursor: default;
+
+    &:not([data-disabled='true']) {
+        animation: expand-and-contract 0.5s ease-in-out;
+        background-color: #03b83c;
+        cursor: pointer;
+    }
+
+    &:not([data-disabled='true']):active {
+        scale: 0.95;
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        vertical-align: middle;
+    }
+}
+
+@keyframes expand-and-contract {
+    0%,
+    100% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.1;
+    }
+}
+
+.key-history {
+    .key-history-row {
+        font-size: 2em;
+        height: 1em;
+        line-height: 1em;
+    }
+}
