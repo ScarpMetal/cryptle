@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { logEvent } from 'firebase/analytics'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import keyIcon from '~/assets/key-icon.svg'
@@ -9,10 +10,11 @@ import { shuffle } from '~/utils'
 import './Level.scss'
 
 export interface LevelProps {
+    targetDate: Date
     targetWord: string
 }
 
-export default function Level({ targetWord }: LevelProps) {
+export default function Level({ targetDate, targetWord }: LevelProps) {
     const [selectedLetters, setSelectedLetters] = useState<string[]>(() => new Array(6).fill(''))
     const [correctRows, setCorrectRows] = useState<string[]>(() => new Array(6).fill(''))
     const [incorrectRows, setIncorrectRows] = useState(() => {
@@ -204,6 +206,7 @@ export default function Level({ targetWord }: LevelProps) {
 
             {showModal && (
                 <Modal onClose={() => setShowModal(false)}>
+                    <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
                     <h2>{roundWon ? 'Success' : 'Failed'}</h2>
                     <div className="key-history">
                         {keyHistory.map((row, index) => (
