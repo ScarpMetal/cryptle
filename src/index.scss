@@ -36,9 +36,10 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
-    min-width: 320px;
-    min-height: 100vh;
-    overflow: hidden;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
 }
 
 h1 {
