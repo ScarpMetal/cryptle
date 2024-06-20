@@ -12,9 +12,15 @@
     height: 100vh;
     height: 100dvh;
     animation: slide-down 0.5s ease-in-out forwards;
+    box-shadow: 0 2em 2em 2em #141414;
 
     &.out {
         animation: slide-up 0.5s ease-in-out forwards;
+    }
+
+    &::after {
+        position: absolute;
+        width: 100%;
     }
 
     .modal {
@@ -40,10 +46,10 @@
 
 @keyframes slide-down {
     from {
-        bottom: 100%;
+        bottom: calc(100% + 10em);
     }
     to {
-        bottom: 0;
+        bottom: 0%;
     }
 }
 
@@ -52,6 +58,6 @@
         bottom: 0;
     }
     to {
-        bottom: 100%;
+        bottom: calc(100% + 10em);
     }
 }
