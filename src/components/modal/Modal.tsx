@@ -1,31 +1,46 @@
-import { ReactNode, useCallback, useRef } from 'react'
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import './Modal.scss'
 
 export interface ModalProps {
     children: ReactNode | ReactNode[]
-    onClose?: () => void
+    onClose: () => void
 }
 
 export default function Modal({ children, onClose }: ModalProps) {
     const ref = useRef<HTMLDivElement>(null)
+    const [slideOut, setSlideOut] = useState(false)
+    const slideOutTimeout = useRef<number | null>(null)
 
     const handleClose = useCallback(() => {
-        if (onClose) {
-            onClose()
-        }
-    }, [onClose])
+        setSlideOut(true)
+    }, [])
 
-    const handleBackgroundClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
-        (event) => {
-            if (!ref.current?.contains(event.target as Node)) {
-                handleClose()
+    // const handleBackgroundClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
+    //     (event) => {
+    //         if (!ref.current?.contains(event.target as Node)) {
+    //             handleClose()
+    //         }
+    //     },
+    //     [handleClose],
+    // )
+
+    useEffect(() => {
+        if (slideOut && !slideOutTimeout.current) {
+            slideOutTimeout.current = setTimeout(() => {
+                onClose()
+            }, 1000)
+        }
+
+        return () => {
+            if (slideOutTimeout.current) {
+                clearTimeout(slideOutTimeout.current)
+                slideOutTimeout.current = null
             }
-        },
-        [handleClose],
-    )
+        }
+    }, [slideOut, onClose])
 
     return (
-        <div className="modal-container" onClick={handleBackgroundClick}>
+        <div className={`modal-container ${slideOut ? 'out' : ''}`}>
             <div className="modal" ref={ref}>
                 <button type="button" className="close-modal-button" onClick={handleClose}>
                     X

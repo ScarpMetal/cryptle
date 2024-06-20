@@ -1,9 +1,10 @@
-import { format } from 'date-fns'
+import { differenceInDays, format } from 'date-fns'
 import { logEvent } from 'firebase/analytics'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import keyIcon from '~/assets/key-icon.svg'
 import Carousel from '~/components/carousel'
 import Modal from '~/components/modal'
+import { releaseDate } from '~/constants/general'
 import { sixLetterWords } from '~/constants/words'
 import { analytics } from '~/firebase'
 import { shuffle } from '~/utils'
@@ -11,10 +12,9 @@ import './Level.scss'
 
 export interface LevelProps {
     targetDate: Date
-    targetWord: string
 }
 
-export default function Level({ targetDate, targetWord }: LevelProps) {
+export default function Level({ targetDate }: LevelProps) {
     const [selectedLetters, setSelectedLetters] = useState<string[]>(() => new Array(6).fill(''))
     const [correctRows, setCorrectRows] = useState<string[]>(() => new Array(6).fill(''))
     const [incorrectRows, setIncorrectRows] = useState(() => {
@@ -27,6 +27,14 @@ export default function Level({ targetDate, targetWord }: LevelProps) {
     const [remainingKeys, setRemainingKeys] = useState(5)
     const [showModal, setShowModal] = useState(false)
     const [keyHistory, setKeyHistory] = useState(() => new Array(6).fill(''))
+
+    /**
+     * Select a target word based on the current day
+     */
+    const targetWord = useMemo(() => {
+        const wordIndex = differenceInDays(targetDate, releaseDate)
+        return sixLetterWords[wordIndex]
+    }, [targetDate])
 
     const letterRows = useMemo(() => {
         // Score each word based on how close it is to the target word
