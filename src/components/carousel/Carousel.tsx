@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import './Carousel.scss'
-import { constrain } from '~/utils'
 
 export interface CarouselProps {
     rowIndex: number
@@ -63,18 +62,18 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, disabl
         // const getCarouselPageX = () => containerPageX + posX
         // const getCarouselCenterPageX = () => getCarouselPageX() + carouselWidth / 2
 
-        const moveTargetBy = (moveBy: number) => {
-            if (targetX) {
-                targetX += moveBy
-            } else {
-                targetX = posX + moveBy
-            }
-            targetX = constrain(targetX, minPosX, maxPosX)
-            if (settled) {
-                settled = false
-                handleCarouselUnsettled()
-            }
-        }
+        // const moveTargetBy = (moveBy: number) => {
+        //     if (targetX) {
+        //         targetX += moveBy
+        //     } else {
+        //         targetX = posX + moveBy
+        //     }
+        //     targetX = constrain(targetX, minPosX, maxPosX)
+        //     if (settled) {
+        //         settled = false
+        //         handleCarouselUnsettled()
+        //     }
+        // }
 
         // const setPageTarget = (pageX: number) => {
         //     const deltaX = pageX - containerCenterPageX
@@ -142,26 +141,26 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, disabl
         const handleMouseUp = () => {
             holding = false
         }
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'ArrowDown') {
-            }
-            if (event.key === 'ArrowUp') {
-            }
-            if (event.key === 'ArrowLeft') {
-                moveTargetBy(letterSize)
-            }
-            if (event.key === 'ArrowRight') {
-                moveTargetBy(-letterSize)
-            }
-            if (event.key === ' ') {
-            }
-        }
+        // const handleKeyDown = (event: KeyboardEvent) => {
+        //     if (event.key === 'ArrowDown') {
+        //     }
+        //     if (event.key === 'ArrowUp') {
+        //     }
+        //     if (event.key === 'ArrowLeft') {
+        //         // moveTargetBy(letterSize)
+        //     }
+        //     if (event.key === 'ArrowRight') {
+        //         // moveTargetBy(-letterSize)
+        //     }
+        //     if (event.key === ' ') {
+        //     }
+        // }
 
         /*
          * Attach listeners
          */
         containerRef.addEventListener('wheel', handleScroll)
-        document.addEventListener('keydown', handleKeyDown)
+        // document.addEventListener('keydown', handleKeyDown)
 
         carouselRef.addEventListener('mousedown', handleMouseDown)
         document.addEventListener('mousemove', handleMouseMove)
@@ -231,7 +230,7 @@ export default function Carousel({ rowIndex, letters, correct, incorrect, disabl
 
         return () => {
             containerRef.removeEventListener('wheel', handleScroll)
-            document.removeEventListener('keydown', handleKeyDown)
+            // document.removeEventListener('keydown', handleKeyDown)
 
             carouselRef.removeEventListener('mousedown', handleMouseDown)
             document.removeEventListener('mousemove', handleMouseMove)
