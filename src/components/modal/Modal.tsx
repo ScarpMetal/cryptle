@@ -28,6 +28,7 @@ export default function Modal({ children, onClose }: ModalProps) {
         if (slideOut && !slideOutTimeout.current) {
             slideOutTimeout.current = setTimeout(() => {
                 onClose()
+                slideOutTimeout.current = null
             }, 1000)
         }
 
