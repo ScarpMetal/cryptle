@@ -14,7 +14,12 @@ function App() {
                 <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
             </div>
             <Level targetDate={targetDate} />
-            <p className="copyright">Matthew Graham © {new Date().getFullYear()}</p>
+            <p className="copyright">
+                <a href="https://matthewgraham.me/" target="_blank">
+                    Matthew Graham
+                </a>{' '}
+                © {new Date().getFullYear()}
+            </p>
         </>
     )
 }
