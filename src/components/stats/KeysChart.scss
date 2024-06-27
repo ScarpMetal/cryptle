@@ -1,0 +1,41 @@
+.keys-chart-title {
+    margin-top: 2em;
+}
+
+.keys-chart {
+    display: flex;
+    height: 150px;
+    width: 240px;
+    gap: 0.5em;
+
+    .column {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        gap: 0.1em;
+
+        .label {
+            height: 20px;
+        }
+
+        .bar {
+            position: relative;
+            background-color: #eee;
+
+            &.today {
+                background-color: #03b83c;
+
+                &::after {
+                    content: 'today';
+                    position: absolute;
+                    bottom: calc(100% + 0.2em);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    text-align: center;
+                    font-size: 0.8em;
+                }
+            }
+        }
+    }
+}

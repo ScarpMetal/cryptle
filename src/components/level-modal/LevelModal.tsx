@@ -1,6 +1,7 @@
 import { format } from 'date-fns'
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import Modal from '~/components/modal'
+import Stats from '~/components/stats/Stats'
 import './LevelModal.scss'
 
 export interface LevelModalHandle {
@@ -59,6 +60,7 @@ const LevelModal = forwardRef<LevelModalHandle, LevelModalProps>(({ data, target
         <Modal animate={!dataExistsOnFirstRender.current} onClose={modalOnClose}>
             <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
             <h2>{data.keysUsed !== -1 ? 'Success' : 'Failed'}</h2>
+            <Stats targetDate={targetDate} />
             <p>
                 {!revealWord && (
                     <button className="click-to-reveal" type="button" onClick={toggleWordReveal}>
