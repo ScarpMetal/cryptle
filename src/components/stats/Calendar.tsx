@@ -5,6 +5,6 @@ export interface CalendarProps {
     data: { [dateKey: string]: LocalLevelData }
 }
 
-export default function Calendar({ targetDate, data }: CalendarProps) {
+export default function Calendar() {
     return <div>Calendar</div>
 }
