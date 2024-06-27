@@ -58,8 +58,8 @@ export default function Level({ targetDate }: LevelProps) {
     useEffect(() => {
         let timeout: number
         if (existingLevelData === null && roundWon) {
-            logEvent(analytics, 'round_won')
             const keysUsed = NUM_STARTING_KEYS - remainingKeys
+            logEvent(analytics, 'round_won', { keysUsed })
             timeout = setTimeout(() => {
                 setExistingLevelData({ keysUsed })
             }, 2000)
