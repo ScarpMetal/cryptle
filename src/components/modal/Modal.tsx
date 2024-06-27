@@ -34,6 +34,8 @@ export default function Modal({ className, children, onClose, animate = false }:
         }
     }, [animClass, onClose])
 
+    console.log('animClass', animClass)
+
     return (
         <div className={combineClasses('modal-container', animClass)}>
             <div className={combineClasses('modal', className)}>

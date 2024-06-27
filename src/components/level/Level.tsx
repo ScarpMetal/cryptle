@@ -56,18 +56,35 @@ export default function Level({ targetDate }: LevelProps) {
 
     // Register a round win
     useEffect(() => {
+        let timeout: number
         if (existingLevelData === null && roundWon) {
             logEvent(analytics, 'round_won')
             const keysUsed = NUM_STARTING_KEYS - remainingKeys
-            setExistingLevelData({ keysUsed })
+            timeout = setTimeout(() => {
+                setExistingLevelData({ keysUsed })
+            }, 2000)
+        }
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout)
+            }
         }
     }, [existingLevelData, roundWon, remainingKeys, setExistingLevelData])
 
     // Register a round loss
     useEffect(() => {
+        let timeout: number
         if (existingLevelData === null && roundFailed) {
             logEvent(analytics, 'round_failed')
-            setExistingLevelData({ keysUsed: -1 })
+            timeout = setTimeout(() => {
+                setExistingLevelData({ keysUsed: -1 })
+            }, 2000)
+        }
+
+        return () => {
+            if (timeout) {
+                clearTimeout(timeout)
+            }
         }
     }, [existingLevelData, roundFailed, setExistingLevelData])
 
@@ -86,6 +103,11 @@ export default function Level({ targetDate }: LevelProps) {
     }, [])
 
     const handleTestClick = useCallback(() => {
+        if (disableTestButton && roundComplete) {
+            levelModalRef.current?.show()
+            logEvent(analytics, 'reopen_modal')
+        }
+
         if (disableTestButton) return
         logEvent(analytics, 'test_button_click')
         selectedLetters.forEach((letter, i) => {
@@ -108,7 +130,7 @@ export default function Level({ targetDate }: LevelProps) {
         })
 
         setRemainingKeys((prev) => Math.max(0, prev - 1))
-    }, [selectedLetters, targetWord, disableTestButton])
+    }, [disableTestButton, roundComplete, selectedLetters, targetWord])
 
     return (
         <>

@@ -49,6 +49,8 @@ const LevelModal = forwardRef<LevelModalHandle, LevelModalProps>(({ data, target
         }
     }, [data])
 
+    console.log(show)
+
     const toggleWordReveal = useCallback(() => {
         setRevealWord((prev) => !prev)
     }, [])

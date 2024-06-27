@@ -14,11 +14,11 @@
     box-shadow: 0 2em 2em 2em #141414;
 
     &.slide-in {
-        animation: slide-down 0.5s ease-in-out forwards;
+        animation: slide-down-modal 0.5s ease-in-out forwards;
     }
 
     &.slide-out {
-        animation: slide-up 0.5s ease-in-out forwards;
+        animation: slide-out-modal 0.5s ease-in-out forwards;
     }
 
     &::after {
@@ -28,7 +28,6 @@
 
     .modal {
         position: relative;
-        // background-color: #444;
         min-height: 300px;
         margin: 0 3em 0 3em;
         border-radius: 0.2em;
@@ -48,7 +47,7 @@
     }
 }
 
-@keyframes slide-down {
+@keyframes slide-down-modal {
     from {
         bottom: calc(100% + 10em);
     }
@@ -57,7 +56,7 @@
     }
 }
 
-@keyframes slide-up {
+@keyframes slide-out-modal {
     from {
         bottom: 0;
     }
