@@ -8,7 +8,7 @@ export interface KeysChartProps {
 }
 
 export default function KeysChart({ targetDate, data }: KeysChartProps) {
-    const bars: { label: string; title?: string; height: number; today: boolean }[] = useMemo(() => {
+    const bars: { label: string; title?: string; height: number; count: number; today: boolean }[] = useMemo(() => {
         const counts: number[] = new Array(6).fill(0)
         Object.values(data).forEach(({ keysUsed }) => {
             if (keysUsed === -1) {
@@ -19,18 +19,45 @@ export default function KeysChart({ targetDate, data }: KeysChartProps) {
         })
 
         const max = Math.max(...counts)
+        const min = 20
         const todaysDateKey = getDateKey(targetDate)
         const keysUsedToday = data[todaysDateKey]?.keysUsed
         return [
-            { label: '1', height: max > 0 ? (counts[0] / max) * 100 : 0, today: keysUsedToday === 1 },
-            { label: '2', height: max > 0 ? (counts[1] / max) * 100 : 0, today: keysUsedToday === 2 },
-            { label: '3', height: max > 0 ? (counts[2] / max) * 100 : 0, today: keysUsedToday === 3 },
-            { label: '4', height: max > 0 ? (counts[3] / max) * 100 : 0, today: keysUsedToday === 4 },
-            { label: '5', height: max > 0 ? (counts[4] / max) * 100 : 0, today: keysUsedToday === 5 },
+            {
+                label: '1',
+                count: counts[0],
+                height: max > 0 ? min + (counts[0] / max) * 100 : min,
+                today: keysUsedToday === 1,
+            },
+            {
+                label: '2',
+                count: counts[1],
+                height: max > 0 ? min + (counts[1] / max) * 100 : min,
+                today: keysUsedToday === 2,
+            },
+            {
+                label: '3',
+                count: counts[2],
+                height: max > 0 ? min + (counts[2] / max) * 100 : min,
+                today: keysUsedToday === 3,
+            },
+            {
+                label: '4',
+                count: counts[3],
+                height: max > 0 ? min + (counts[3] / max) * 100 : min,
+                today: keysUsedToday === 4,
+            },
+            {
+                label: '5',
+                count: counts[4],
+                height: max > 0 ? min + (counts[4] / max) * 100 : min,
+                today: keysUsedToday === 5,
+            },
             {
                 label: 'NC',
                 title: 'Not Completed',
-                height: max > 0 ? (counts[5] / max) * 100 : 0,
+                count: counts[5],
+                height: max > 0 ? min + (counts[5] / max) * 100 : min,
                 today: keysUsedToday === -1,
             },
         ]
@@ -39,11 +66,14 @@ export default function KeysChart({ targetDate, data }: KeysChartProps) {
     return (
         <>
             <div className="keys-chart-title">Keys Used</div>
+            <hr />
             <div className="keys-chart">
-                {bars.map(({ label, title, height, today }, index) => {
+                {bars.map(({ label, title, count, height, today }, index) => {
                     return (
                         <div key={index} className="column">
-                            <div className={combineClasses('bar', today && 'today')} style={{ height }} />
+                            <div className={combineClasses('bar', today && 'today')} style={{ height }}>
+                                <span className="count">{count}</span>
+                            </div>
                             <div className="label" title={title}>
                                 {label}
                             </div>
