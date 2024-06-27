@@ -9,10 +9,14 @@ function App() {
 
     return (
         <>
-            <div>
-                <h1>cryptle</h1>
-                <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
-            </div>
+            <nav className="navbar">
+                <div className="title-container">
+                    <a className="title" href="/">
+                        cryptle
+                    </a>
+                    <div className="date">{format(targetDate, 'MMMM do, yyyy')}</div>
+                </div>
+            </nav>
             <Level targetDate={targetDate} />
             <p className="copyright">
                 <a href="https://matthewgraham.me/" target="_blank">
