@@ -1,18 +1,24 @@
-.click-to-reveal {
-}
+.level-modal {
+    .date {
+        font-size: 0.8em;
+    }
 
-.revealed-word {
-    font-family: 'Courier New', Courier, monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    animation: slide-up 1s forwards;
-    opacity: 0;
-}
+    .click-to-reveal {
+    }
 
-.visit-tomorrow {
-    font-size: 0.8em;
-    animation: slide-up 1s 2s forwards;
-    opacity: 0;
+    .revealed-word {
+        font-family: 'Courier New', Courier, monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        animation: slide-up 1s forwards;
+        opacity: 0;
+    }
+
+    .visit-tomorrow {
+        font-size: 0.8em;
+        animation: slide-up 1s 2s forwards;
+        opacity: 0;
+    }
 }
 
 @keyframes slide-up {

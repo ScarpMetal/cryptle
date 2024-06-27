@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import { useState } from 'react'
 import Level from '~/components/level/Level'
 import './App.scss'
@@ -14,7 +13,7 @@ function App() {
                     <a className="title" href="/">
                         cryptle
                     </a>
-                    <div className="date">{format(targetDate, 'MMMM do, yyyy')}</div>
+                    {/* <div className="date">{format(targetDate, 'MMMM do, yyyy')}</div> */}
                 </div>
             </nav>
             <Level targetDate={targetDate} />

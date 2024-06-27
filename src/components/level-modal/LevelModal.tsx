@@ -57,8 +57,8 @@ const LevelModal = forwardRef<LevelModalHandle, LevelModalProps>(({ data, target
     if (!show) return null
 
     return (
-        <Modal animate={!dataExistsOnFirstRender.current} onClose={modalOnClose}>
-            <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
+        <Modal className="level-modal" animate={!dataExistsOnFirstRender.current} onClose={modalOnClose}>
+            <div className="date">{format(targetDate, 'MMMM do, yyyy')}</div>
             <h2>{data.keysUsed !== -1 ? 'Success' : 'Failed'}</h2>
             <Stats targetDate={targetDate} />
             <p>

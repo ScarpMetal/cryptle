@@ -3,12 +3,13 @@ import { combineClasses } from '~/utils'
 import './Modal.scss'
 
 export interface ModalProps {
+    className?: string
     children: ReactNode | ReactNode[]
     onClose?: () => void
     animate?: boolean
 }
 
-export default function Modal({ children, onClose, animate = false }: ModalProps) {
+export default function Modal({ className, children, onClose, animate = false }: ModalProps) {
     const [animClass, setAnimClass] = useState<'slide-in' | 'slide-out' | null>(() =>
         animate === true ? 'slide-in' : null,
     )
@@ -35,7 +36,7 @@ export default function Modal({ children, onClose, animate = false }: ModalProps
 
     return (
         <div className={combineClasses('modal-container', animClass)}>
-            <div className="modal">
+            <div className={combineClasses('modal', className)}>
                 {!!onClose && (
                     <button type="button" className="close-modal-button" onClick={handleClose}>
                         X
