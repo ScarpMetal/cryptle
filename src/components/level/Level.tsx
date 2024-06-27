@@ -1,10 +1,11 @@
-import { format } from 'date-fns'
 import { logEvent } from 'firebase/analytics'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import keyIcon from '~/assets/key-icon.svg'
 import Carousel from '~/components/carousel'
-import Modal from '~/components/modal'
+import LevelModal, { LevelModalHandle } from '~/components/level-modal'
+import { NUM_STARTING_KEYS } from '~/constants/general'
 import { analytics } from '~/firebase'
+import useExistingLevelData from '~/hooks/useExistingLevelData'
 import useLevel from '~/hooks/useLevel'
 import './Level.scss'
 
@@ -13,6 +14,7 @@ export interface LevelProps {
 }
 
 export default function Level({ targetDate }: LevelProps) {
+    const levelModalRef = useRef<LevelModalHandle>(null)
     const [selectedLetters, setSelectedLetters] = useState<string[]>(() => new Array(6).fill(''))
     const [correctRows, setCorrectRows] = useState<string[]>(() => new Array(6).fill(''))
     const [incorrectRows, setIncorrectRows] = useState(() => {
@@ -22,9 +24,8 @@ export default function Level({ targetDate }: LevelProps) {
         }
         return rows
     })
-    const [remainingKeys, setRemainingKeys] = useState(5)
-    const [showModal, setShowModal] = useState(false)
-    const [keyHistory, setKeyHistory] = useState(() => new Array(6).fill(''))
+    const [remainingKeys, setRemainingKeys] = useState(NUM_STARTING_KEYS)
+    const [existingLevelData, setExistingLevelData] = useExistingLevelData(targetDate)
 
     const { targetWord, letterRows } = useLevel(targetDate)
 
@@ -45,28 +46,30 @@ export default function Level({ targetDate }: LevelProps) {
     }, [selectedLetters, correctRows, targetWord])
 
     const roundFailed = useMemo(() => {
-        return remainingKeys <= 0
-    }, [remainingKeys])
+        return remainingKeys <= 0 && !roundWon
+    }, [remainingKeys, roundWon])
 
-    const roundComplete = useMemo(() => roundWon || roundFailed, [roundWon, roundFailed])
+    const roundComplete = useMemo(
+        () => roundWon || roundFailed || existingLevelData !== null,
+        [roundWon, roundFailed, existingLevelData],
+    )
 
+    // Register a round win
     useEffect(() => {
-        let timeout: number | null
-        if (roundComplete) {
-            logEvent(analytics, 'round_complete')
-            timeout = setTimeout(() => {
-                setShowModal(true)
-                timeout = null
-            }, 1000)
+        if (existingLevelData === null && roundWon) {
+            logEvent(analytics, 'round_won')
+            const keysUsed = NUM_STARTING_KEYS - remainingKeys
+            setExistingLevelData({ keysUsed })
         }
+    }, [existingLevelData, roundWon, remainingKeys, setExistingLevelData])
 
-        return () => {
-            if (timeout) {
-                clearTimeout(timeout)
-                timeout = null
-            }
+    // Register a round loss
+    useEffect(() => {
+        if (existingLevelData === null && roundFailed) {
+            logEvent(analytics, 'round_failed')
+            setExistingLevelData({ keysUsed: -1 })
         }
-    }, [roundComplete])
+    }, [existingLevelData, roundFailed, setExistingLevelData])
 
     const handleLetterChange = useCallback((row: number, letter: string) => {
         setSelectedLetters((prev) => {
@@ -83,19 +86,12 @@ export default function Level({ targetDate }: LevelProps) {
     }, [])
 
     const handleTestClick = useCallback(() => {
-        if (disableTestButton && roundComplete) {
-            setShowModal(true)
-            logEvent(analytics, 'reopen_modal')
-        }
         if (disableTestButton) return
         logEvent(analytics, 'test_button_click')
-        const guessHistoryRows: string[] = []
         selectedLetters.forEach((letter, i) => {
             if (letter === targetWord.charAt(i)) {
-                guessHistoryRows.push('🟩')
                 setCorrectRows((prev) => prev.map((existingLetter, index) => (i === index ? letter : existingLetter)))
             } else {
-                guessHistoryRows.push('⬛️')
                 setIncorrectRows((prev) => {
                     const nextIncorrectRows: string[][] = []
                     for (let index = 0; index < 6; index++) {
@@ -111,9 +107,9 @@ export default function Level({ targetDate }: LevelProps) {
             }
         })
 
-        setKeyHistory((prev) => prev.map((row, index) => row + guessHistoryRows[index]))
         setRemainingKeys((prev) => Math.max(0, prev - 1))
-    }, [selectedLetters, targetWord, disableTestButton, roundComplete])
+    }, [selectedLetters, targetWord, disableTestButton])
+
     return (
         <>
             <div className="carousels">
@@ -179,20 +175,7 @@ export default function Level({ targetDate }: LevelProps) {
                 <div className="remaining-keys">x{remainingKeys}</div>
             </div>
 
-            {showModal && (
-                <Modal onClose={() => setShowModal(false)}>
-                    <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
-                    <h2>{roundWon ? 'Success' : 'Failed'}</h2>
-                    <div className="key-history">
-                        {keyHistory.map((row, index) => (
-                            <div className="key-history-row" key={index}>
-                                {row}
-                            </div>
-                        ))}
-                    </div>
-                    <h3>The word was "{targetWord}"</h3>
-                </Modal>
-            )}
+            <LevelModal ref={levelModalRef} data={existingLevelData} targetDate={targetDate} targetWord={targetWord} />
         </>
     )
 }

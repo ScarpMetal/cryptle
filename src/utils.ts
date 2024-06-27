@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 export function shuffle<T>(array: T[]) {
     let currentIndex = array.length
 
@@ -14,4 +16,12 @@ export function shuffle<T>(array: T[]) {
 
 export function constrain(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max))
+}
+
+export function combineClasses(...args: unknown[]) {
+    return args.filter(Boolean).join(' ')
+}
+
+export function getDateKey(date: Date) {
+    return format(date, 'yyyy-MM-dd')
 }

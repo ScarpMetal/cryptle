@@ -1,51 +1,46 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
+import { combineClasses } from '~/utils'
 import './Modal.scss'
 
 export interface ModalProps {
     children: ReactNode | ReactNode[]
-    onClose: () => void
+    onClose?: () => void
+    animate?: boolean
 }
 
-export default function Modal({ children, onClose }: ModalProps) {
-    const ref = useRef<HTMLDivElement>(null)
-    const [slideOut, setSlideOut] = useState(false)
-    const slideOutTimeout = useRef<number | null>(null)
+export default function Modal({ children, onClose, animate = false }: ModalProps) {
+    const [animClass, setAnimClass] = useState<'slide-in' | 'slide-out' | null>(() =>
+        animate === true ? 'slide-in' : null,
+    )
 
     const handleClose = useCallback(() => {
-        setSlideOut(true)
-    }, [])
-
-    // const handleBackgroundClick: React.MouseEventHandler<HTMLDivElement> = useCallback(
-    //     (event) => {
-    //         if (!ref.current?.contains(event.target as Node)) {
-    //             handleClose()
-    //         }
-    //     },
-    //     [handleClose],
-    // )
+        if (animate) {
+            setAnimClass('slide-out')
+        } else {
+            onClose?.()
+        }
+    }, [animate, onClose])
 
     useEffect(() => {
-        if (slideOut && !slideOutTimeout.current) {
-            slideOutTimeout.current = setTimeout(() => {
-                onClose()
-                slideOutTimeout.current = null
+        if (animClass === 'slide-out') {
+            const timeout = setTimeout(() => {
+                onClose?.()
             }, 1000)
-        }
 
-        return () => {
-            if (slideOutTimeout.current) {
-                clearTimeout(slideOutTimeout.current)
-                slideOutTimeout.current = null
+            return () => {
+                clearTimeout(timeout)
             }
         }
-    }, [slideOut, onClose])
+    }, [animClass, onClose])
 
     return (
-        <div className={`modal-container ${slideOut ? 'out' : ''}`}>
-            <div className="modal" ref={ref}>
-                <button type="button" className="close-modal-button" onClick={handleClose}>
-                    X
-                </button>
+        <div className={combineClasses('modal-container', animClass)}>
+            <div className="modal">
+                {!!onClose && (
+                    <button type="button" className="close-modal-button" onClick={handleClose}>
+                        X
+                    </button>
+                )}
                 {children}
             </div>
         </div>
