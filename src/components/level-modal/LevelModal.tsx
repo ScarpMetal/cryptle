@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react'
 import Modal from '~/components/modal'
 import './LevelModal.scss'
 
@@ -17,6 +17,7 @@ export interface LevelModalProps {
 const LevelModal = forwardRef<LevelModalHandle, LevelModalProps>(({ data, targetDate, targetWord }, ref) => {
     const dataExistsOnFirstRender = useRef(!!data)
     const [show, setShow] = useState(() => !!data)
+    const [revealWord, setRevealWord] = useState(false)
 
     useImperativeHandle(
         ref,
@@ -47,6 +48,10 @@ const LevelModal = forwardRef<LevelModalHandle, LevelModalProps>(({ data, target
         }
     }, [data])
 
+    const toggleWordReveal = useCallback(() => {
+        setRevealWord((prev) => !prev)
+    }, [])
+
     if (!data) return null
     if (!show) return null
 
@@ -54,10 +59,19 @@ const LevelModal = forwardRef<LevelModalHandle, LevelModalProps>(({ data, target
         <Modal animate={!dataExistsOnFirstRender.current} onClose={modalOnClose}>
             <h4>{format(targetDate, 'MMMM do, yyyy')}</h4>
             <h2>{data.keysUsed !== -1 ? 'Success' : 'Failed'}</h2>
-            <p>The word was "{targetWord}"</p>
-            <p style={{ fontSize: '.8em' }}>
-                <i>Visit tomorrow for a new word</i>
+            <p>
+                {!revealWord && (
+                    <button className="click-to-reveal" type="button" onClick={toggleWordReveal}>
+                        Click to reveal word
+                    </button>
+                )}
+                {revealWord && <span className="revealed-word">{targetWord}</span>}
             </p>
+            {revealWord && (
+                <p className="visit-tomorrow">
+                    <i>Visit tomorrow for a new word</i>
+                </p>
+            )}
         </Modal>
     )
 })

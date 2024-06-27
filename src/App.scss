@@ -28,6 +28,8 @@
         flex-wrap: wrap;
 
         .title {
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: 0.02em;
             font-size: 2rem;
             font-weight: bold;
         }
@@ -41,5 +43,6 @@
 
 .copyright {
     margin-top: auto;
+    font-size: 0.8em;
     opacity: 0.5;
 }

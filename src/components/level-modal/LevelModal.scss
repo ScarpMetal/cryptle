@@ -1,0 +1,27 @@
+.click-to-reveal {
+}
+
+.revealed-word {
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    animation: slide-up 1s forwards;
+    opacity: 0;
+}
+
+.visit-tomorrow {
+    font-size: 0.8em;
+    animation: slide-up 1s 2s forwards;
+    opacity: 0;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
