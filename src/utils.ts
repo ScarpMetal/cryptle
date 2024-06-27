@@ -18,6 +18,12 @@ export function constrain(value: number, min: number, max: number) {
     return Math.max(min, Math.min(value, max))
 }
 
+export function formatCount(count: number) {
+    if (count >= 10000) return (count / 1000).toFixed(0) + 'K'
+    if (count >= 1000) return (count / 1000).toFixed(1) + 'K'
+    return count
+}
+
 export function combineClasses(...args: unknown[]) {
     return args.filter(Boolean).join(' ')
 }

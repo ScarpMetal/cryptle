@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { combineClasses, getDateKey } from '~/utils'
+import { combineClasses, formatCount, getDateKey } from '~/utils'
 import './KeysChart.scss'
 
 export interface KeysChartProps {
@@ -71,8 +71,12 @@ export default function KeysChart({ targetDate, data }: KeysChartProps) {
                 {bars.map(({ label, title, count, height, today }, index) => {
                     return (
                         <div key={index} className="column">
-                            <div className={combineClasses('bar', today && 'today')} style={{ height }}>
-                                <span className="count">{count}</span>
+                            <div
+                                className={combineClasses('bar', today && 'today')}
+                                style={{ height }}
+                                title={`${count} game${count === 1 ? '' : 's'}`}
+                            >
+                                <span className="count">{formatCount(count)}</span>
                             </div>
                             <div className="label" title={title}>
                                 {label}
